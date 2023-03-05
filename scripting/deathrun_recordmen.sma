@@ -46,19 +46,25 @@ public WhoIsRecordmen(){
 }
 
 public GetRecordmen( failState, Handle:query, error[], errNum){
-	if (errNum) server_print("map_recordmen:GetRecordmen:%s", error)
-	if(SQL_NumResults(query)){
-		player_id = SQL_ReadResult(query, 1)
-		record = SQL_ReadResult(query, 2)
-		SQL_ThreadQuery(MYSQL_CONNECTION, "GetRecordmenName", fmt("SELECT * FROM `players` WHERE `id` = %d;", player_id));
+	if (errNum) server_print("map_recordmen:GetRecordmen:(%d)%s", errNum, error)
+
+	else {
+		if(SQL_NumResults(query)){
+			player_id = SQL_ReadResult(query, 1)
+			record = SQL_ReadResult(query, 2)
+			SQL_ThreadQuery(MYSQL_CONNECTION, "GetRecordmenName", fmt("SELECT * FROM `players` WHERE `id` = %d;", player_id));
+		}
 	}
 }
 
 public GetRecordmenName( failState, Handle:query, error[], errNum){
-	if (errNum) server_print("map_recordmen:GetRecordmenName:%s", error)
-	if(SQL_NumResults(query)){
-		SQL_ReadResult(query, 2, name, charsmax(name))
-		formatex(recordmen, charsmax(recordmen), " #1 %s\n   %s", name, Clock(record));
+	if (errNum) server_print("map_recordmen:GetRecordmenName:(%d)%s", errNum, error)
+
+	else {
+		if(SQL_NumResults(query)){
+			SQL_ReadResult(query, 2, name, charsmax(name))
+			formatex(recordmen, charsmax(recordmen), " #1 %s\n   %s", name, Clock(record));
+		}
 	}
 }
 

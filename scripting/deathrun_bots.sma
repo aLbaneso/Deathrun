@@ -151,9 +151,8 @@ public EventRoundStart(){
 }
 
 public begin_render(){
-	if (!is_user_alive(botid)){
+	if (!is_user_alive(botid))
 		spawn(botid);
-	}
 	
 	if (botid)
 		set_user_rendering(botid, kRenderFxGlowShell, 192, 192, 192, kRenderNormal, 25);

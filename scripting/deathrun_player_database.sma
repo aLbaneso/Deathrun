@@ -28,11 +28,11 @@ public MYSQL_Init(){
 	MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 	new query[256]
 	formatex(query, charsmax(query), "CREATE TABLE IF NOT EXISTS `%s` (\
-	`id` INT(4) NOT NULL AUTO_INCREMENT,\
-	`steamid` VARCHAR(32) NOT NULL,\
-	`name` VARCHAR(32) NOT NULL,\
-	PRIMARY KEY (`id`),\
-	UNIQUE (`steamid`));", MYSQL_TABLE)
+		`id` INT(4) NOT NULL AUTO_INCREMENT,\
+		`steamid` VARCHAR(32) NOT NULL,\
+		`name` VARCHAR(32) NOT NULL,\
+		PRIMARY KEY (`id`),\
+		UNIQUE (`steamid`));", MYSQL_TABLE)
 	SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", query)
 }
 
@@ -58,23 +58,26 @@ public __get_user_id(iPlugin, iParams)
 	return is_user_connected(get_param(1)) ? DatabaseID[get_param(1)] : -1
 
 public DataOutput(failState, Handle:query, error[], errNum, data[]){
-	if (errNum) server_print("deathrun_database2:DataOutput:%s", error)
-	new id = data[0]
-	if(is_user_connected(id)){
-		if(!SQL_NumResults(query)){
-			new steamid[32]
-			get_user_authid(id, steamid, charsmax(steamid))
-			SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("INSERT INTO `%s` VALUES(NULL, '%s', '%n');", MYSQL_TABLE, steamid, id))
-			client_putinserver(id)
-			
-			} else {
-			DatabaseID[id] = SQL_ReadResult(query, 0)
+	if (errNum) server_print("deathrun_database2:DataOutput:(%d)%s", errNum, error)
 
-			if (!ExecuteForward(forwardUserLogin, forwardUserLoginReturn, id))
-				server_print("deathrun_database2:Cannot execute forward")
+	else {
+		new id = data[0]
+		if(is_user_connected(id)){
+			if(!SQL_NumResults(query)){
+				new steamid[32]
+				get_user_authid(id, steamid, charsmax(steamid))
+				SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("INSERT INTO `%s` VALUES(NULL, '%s', '%n');", MYSQL_TABLE, steamid, id))
+				client_putinserver(id)
+				
+				} else {
+				DatabaseID[id] = SQL_ReadResult(query, 0)
+
+				if (!ExecuteForward(forwardUserLogin, forwardUserLoginReturn, id))
+					server_print("deathrun_database2:Cannot execute forward")
+			}
 		}
 	}
 }
 
 public IgnoredOutput(failState, Handle:query, const error[], errNum)
-	if (errNum) server_print("deathrun_database2:IgnoredOutput:%s", error)
+	if (errNum) server_print("deathrun_database2:IgnoredOutput:(%d)%s", errNum, error)

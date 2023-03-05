@@ -25,7 +25,6 @@ public plugin_init(){
 	register_logevent("ReloadRank", 2, "1=Round_Start") 
 	
 	register_clcmd("say rank", "clcmd_rank")
-	register_clcmd("say test", "clcmd_test")
 	get_mapname(mapname, charsmax(mapname))
 }
 
@@ -74,31 +73,37 @@ public ReloadRank(){
 }
 
 public GetRecordHandler(failState, Handle:query, error[], errNum, data[]){
-	if (errNum) server_print("map_rank:GetRecordHandler:%s", error)
-	new id = data[0];
-	if(is_user_connected(id)){
-		if(SQL_NumResults(query)){
-			Player[id][record] = SQL_ReadResult(query, 2)
-			Player[id][timestamp] = SQL_ReadResult(query, 3)
+	if (errNum) server_print("map_rank:GetRecordHandler:(%d)%s", errNum, error)
 
-			new data2[2], query_rank_single[384]
-			data2[0] = id
-			data2[1] = 0
-			formatex(query_rank_single, charsmax(query_rank_single), "select 1 + count(*)\
-				from `%s`\
-				where `%s`.`record` < \
-				(select `%s`.`record` from `%s` where `%s`.`player_id` = %d);", mapname, mapname, mapname, mapname, mapname, _get_user_id(id))
-			SQL_ThreadQuery(MYSQL_CONNECTION, "GetRankHandler", query_rank_single, data2, sizeof data2)
+	else {
+		new id = data[0];
+		if(is_user_connected(id)){
+			if(SQL_NumResults(query)){
+				Player[id][record] = SQL_ReadResult(query, 2)
+				Player[id][timestamp] = SQL_ReadResult(query, 3)
+
+				new data2[2], query_rank_single[384]
+				data2[0] = id
+				data2[1] = 0
+				formatex(query_rank_single, charsmax(query_rank_single), "select 1 + count(*)\
+					from `%s`\
+					where `%s`.`record` < \
+					(select `%s`.`record` from `%s` where `%s`.`player_id` = %d);", mapname, mapname, mapname, mapname, mapname, _get_user_id(id))
+				SQL_ThreadQuery(MYSQL_CONNECTION, "GetRankHandler", query_rank_single, data2, sizeof data2)
+			}
 		}
 	}
 }
 
 public GetRankHandler(failState, Handle:query, error[], errNum, data[]){
-	if (errNum) server_print("map_rank:GetRankHandler:%s", error)
-	new id = data[0];
-	if(is_user_connected(id)){
-		if(SQL_NumResults(query))
-			Player[id][rank] = SQL_ReadResult(query, 0)
+	if (errNum) server_print("map_rank:GetRankHandler:(%d)%s", errNum, error)
+
+	else {
+		new id = data[0];
+		if(is_user_connected(id)){
+			if(SQL_NumResults(query))
+				Player[id][rank] = SQL_ReadResult(query, 0)
+		}
 	}
 }
 
@@ -110,14 +115,6 @@ public clcmd_rank(id){
 	
 	else
 		client_print(id, print_chat, "You are not ranked yet in this map.")
-}
-
-public clcmd_test(id){
-	new data[2]
-	data[0] = id
-	data[1] = 0
-
-	SQL_ThreadQuery(MYSQL_CONNECTION, "GetRecordHandler", fmt("SELECT * FROM `%s` WHERE `player_id` = %d;", mapname, _get_user_id(id)), data, sizeof data )
 }
 
 public __get_user_rank(iPlugin, iParams)

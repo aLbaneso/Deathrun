@@ -119,7 +119,7 @@ public Respawn(id){
 }
 
 public IgnoredOutput(failState, Handle:query, const error[], errNum)
-	if (errNum) server_print("deathrun_timer:IgnoredOutput:%s", error)
+	if (errNum) server_print("deathrun_timer:IgnoredOutput:(%d)%s", errNum, error)
 
 public Clock(Value)
 	return fmt("%d:%02d.%03dms", Value/1000/60, (Value/1000) % 60, Value % 1000)

@@ -3,8 +3,6 @@
 #include <sqlx>
 #include <settings>
 
-#define MAPLIST "maplist"
-
 native _get_user_id(id)
 
 new Handle:MYSQL_CONNECTION
@@ -65,15 +63,18 @@ public MapOutput(failState, Handle:query, error[], errNum){
 }
 
 public DataOutput(failState, Handle:query, error[], errNum, data[]){
-	if (errNum) server_print("map_database:DataOutput:%s", error)
-	new id = data[0]
-	if(is_user_connected(id)){
-		if(SQL_NumResults(query)){
-			Player[id][record] = SQL_ReadResult(query, 2)
-			Player[id][timestamp] = SQL_ReadResult(query, 3)
+	if (errNum) server_print("map_database:DataOutput:(%d)%s", errNum, error)
+	
+	else {
+		new id = data[0]
+		if(is_user_connected(id)){
+			if(SQL_NumResults(query)){
+				Player[id][record] = SQL_ReadResult(query, 2)
+				Player[id][timestamp] = SQL_ReadResult(query, 3)
+			}
 		}
 	}
 }
 
 public IgnoredOutput(failState, Handle:query, const error[], errNum)
-	if (errNum) server_print("map_database:IgnoredOutput:%s", error)
+	if (errNum) server_print("map_database:IgnoredOutput:(%d)%s", errNum, error)

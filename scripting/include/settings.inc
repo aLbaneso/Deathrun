@@ -6,3 +6,5 @@
 #define MYSQL_USER "server"
 #define MYSQL_PASSWORD "server"
 #define MYSQL_DATABASE "server"
+#define MYSQL_TABLE "players"
+#define MAPLIST "maplist"
