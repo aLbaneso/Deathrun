@@ -22,6 +22,7 @@ public plugin_init(){
 	register_event("HLTV", "WhoIsRecordmen", "a", "1=0", "2=0");
 
 	get_mapname(mapname, charsmax(mapname))
+	strtolower(mapname)
 	set_task(2.0, "PrintRecordmen", .flags="b");
 }
 

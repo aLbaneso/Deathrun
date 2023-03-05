@@ -22,6 +22,7 @@ public plugin_init(){
 		register_plugin("Deathrun: Map Database", __DATE__, AUTHOR)
 	#endif
 	get_mapname(mapname, charsmax(mapname))
+	strtolower(mapname)
 }
 
 public plugin_cfg()

@@ -26,6 +26,7 @@ public plugin_init(){
 	
 	register_clcmd("say rank", "clcmd_rank")
 	get_mapname(mapname, charsmax(mapname))
+	strtolower(mapname)
 }
 
 public plugin_cfg()
