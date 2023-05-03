@@ -15,7 +15,8 @@
 ### Setup
 1. Modify `scripting/include/settings.inc` to configure your database and add your website url to later complie the files
 2. Upload web folder to your web server (requires php) and the plugins to your game server (should work on HLDS with AMXX 1.9+)
-3. Start the server, mod will take care of the SQL table creation
+3. Enable mysql at configs/modules.ini file
+4. Start the server, mod will take care of the SQL table creation
 
 ### TODO
 Nothing at this moment
