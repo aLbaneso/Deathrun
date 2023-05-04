@@ -11,14 +11,16 @@
 ### Requirements
 1. AmxxModule
 2. MySQL Database
+3. Web Server
 
 ### Setup
 1. Modify `scripting/include/settings.inc` to configure your database and add your website url to later complie the files
-2. Upload web folder to your web server (requires php) and the plugins to your game server (should work on HLDS with AMXX 1.9+)
-3. Start the server, mod will take care of the SQL table creation
+2. Upload web folder to your web server (requires php) and the plugins to your game server (should work on any/HLDS with AMXX 1.9+)
+3. Enable mysql at configs/modules.ini file
+4. Start the server, mod will take care of the SQL table creation
 
 ### TODO
-Nothing at this moment
+You still need to block players from joining Terrorist team. Although this is mandatory for the mod to run without any problems, there should be plenty of resources online that can help you auto-join all players to CT. REHLDS has already implemented this feature unless you're using HLDS. In this case you need to look for another plugin to add on top of this MOD.
 
 ### SQL Table Examples
 
