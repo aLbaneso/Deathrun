@@ -77,16 +77,16 @@
 						if ($enable_geoip == true){
 							$info = get_player_geoip($dud);
 							if (!empty($info["country_code"])){ ?>
-								<td><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></td>
+								<td><a href=<?php echo "?id=".$dud;?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
 							<?php }
 
 							else { ?>
-									<td><?php echo $name;?></td>
+									<td><a href=<?php echo "?id=".$dud;?>><?php echo $name;?></a></td>
 							<?php }
 						}
 
 						else { ?>
-							<td><?php echo $name;?></td>
+							<td><a href=<?php echo "?id=".$dud;?>><?php echo $name;?></a></td>
 						<?php } ?>
 					<td><?php echo $counts[$dud]." map(s)";?></td>
 				</tr>

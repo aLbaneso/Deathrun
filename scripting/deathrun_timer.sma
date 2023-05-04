@@ -87,15 +87,16 @@ public GameWin(id){
 	Player[rank] = _get_user_rank(id)
 	Player[record] = _get_user_record(id)
 	Player[timestamp] = _get_user_timestamp(id)
+	new systime = get_systime()
 
 	if (!Player[rank]){
 		client_print_color(id, print_team_default, "%s ^1Congratulations on your first record on this map", TAG)
-		PublishRecord(true, _get_user_id(id), Milliseconds)
+		PublishRecord(true, _get_user_id(id), Milliseconds, systime)
 	}
 
 	else if (Player[record]){
 		if (Milliseconds < Player[record]){
-			PublishRecord(false, _get_user_id(id), Milliseconds)
+			PublishRecord(false, _get_user_id(id), Milliseconds, systime)
 			client_print_color(id, print_team_blue, "%s ^1New record (^3-%s ^1improvement)", TAG, Clock(Player[record] - Milliseconds))
 		}
 
@@ -110,13 +111,13 @@ public GameWin(id){
 	client_print_color(id, print_team_blue, "%s ^1%n won the round within ^3%s", TAG, id, Clock(Milliseconds))
 } 
 
-public PublishRecord(bool: improvement, player_id, new_record){
+public PublishRecord(bool: improvement, player_id, new_record, systime){
 	if (improvement){
-		SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("INSERT INTO `%s` VALUES(NULL, %d, %d, %d);", mapname, player_id, new_record, get_systime()))
+		SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("INSERT INTO `%s` VALUES(NULL, %d, %d, %d);", mapname, player_id, new_record, systime))
 	}
 
 	else {
-		SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("UPDATE `%s` SET `record` = %d, `timestamp` = %d WHERE `player_id` = %d;", mapname, new_record, get_systime(), player_id))
+		SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("UPDATE `%s` SET `record` = %d, `timestamp` = %d WHERE `player_id` = %d;", mapname, new_record, systime, player_id))
 	}
 }
 
