@@ -32,38 +32,38 @@
 	function get_player_name($id){
 		global $mysqli;
 		global $players;
-		return $mysqli->query("SELECT `name` FROM `".$players."` WHERE `id` = ".$id.";")->fetch_column();
+		return $mysqli->query("SELECT `name` FROM `${players}` WHERE `id` = ${id};")->fetch_column();
 	}
 
 	function get_player_info($id){
 		global $mysqli;
 		global $players;
-		return $mysqli->query("SELECT * FROM `".$players."` WHERE `id` = ".$id.";")->fetch_assoc();
+		return $mysqli->query("SELECT * FROM `${players}` WHERE `id` = ${id};")->fetch_assoc();
 	}
 
 	function get_player_geoip($id){
 		global $mysqli;
-		return $mysqli->query("SELECT * FROM `geoip` WHERE `id` = ".$id.";")->fetch_assoc();
+		return $mysqli->query("SELECT * FROM `geoip` WHERE `id` = ${id};")->fetch_assoc();
 	}
 
 	function get_player_rank($id, $mapname){
 		global $mysqli;
-		return $mysqli->query("select 1 + count(*) from `".$mapname."` where `".$mapname."`.`record` < (select `".$mapname."`.`record` from `".$mapname."` where `".$mapname."`.`player_id` = $id);")->fetch_column();
+		return $mysqli->query("select 1 + count(*) from `${mapname}` where `${mapname}`.`record` < (select `${mapname}`.`record` from `${mapname}` where `${mapname}`.`player_id` = ${id});")->fetch_column();
 	}
 
 	function get_player_map_data($id, $mapname){
 		global $mysqli;
-		return $mysqli->query("SELECT * FROM `".$mapname."` WHERE `id` = ".$id.";")->fetch_assoc();
+		return $mysqli->query("SELECT * FROM `${mapname}` WHERE `id` = ${id};")->fetch_assoc();
 	}
 
 	function get_map_best($mapname){
 		global $mysqli;
-		return $mysqli->query("SELECT * FROM `".$mapname."` ORDER BY `record` ASC LIMIT 1;")->fetch_assoc();
+		return $mysqli->query("SELECT * FROM `${mapname}` ORDER BY `record` ASC LIMIT 1;")->fetch_assoc();
 	}
 
 	function get_map_records($mapname){
 		global $mysqli;
-		return $mysqli->query("SELECT COUNT(*) FROM `".$mapname."`;")->fetch_column();
+		return $mysqli->query("SELECT COUNT(*) FROM `${mapname}`;")->fetch_column();
 	}
 
 	function CalculateTimer($Milliseconds){

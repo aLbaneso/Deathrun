@@ -21,6 +21,7 @@ public plugin_init(){
 	#else
 		register_plugin("Deathrun: Map Database", __DATE__, AUTHOR)
 	#endif
+	
 	get_mapname(mapname, charsmax(mapname))
 	strtolower(mapname)
 
@@ -29,6 +30,10 @@ public plugin_init(){
 
 public plugin_cfg(){
 	MYSQL_Init()
+}
+
+public plugin_end(){
+	SQL_FreeHandle(MYSQL_CONNECTION)
 }
 
 public MYSQL_Init(){

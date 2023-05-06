@@ -24,6 +24,10 @@ public plugin_cfg(){
 	MYSQL_Init()
 }
 
+public plugin_end(){
+	SQL_FreeHandle(MYSQL_CONNECTION)
+}
+
 public MYSQL_Init(){
 	MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 

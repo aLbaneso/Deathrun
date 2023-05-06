@@ -96,16 +96,16 @@
 								$info = get_player_geoip($player["player_id"]);
 
 								if (!empty($info["country_code"])){ ?>
-									<td><a href=<?php echo "player.php?id=".$player["player_id"];?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
+									<td><a href=<?php echo "player.php?id=${player["player_id"]}";?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
 								<?php }
 
 								else { ?>
-										<td><a href=<?php echo "player.php?id=".$player["player_id"];?>> <?php echo $name;?></a></td>
+										<td><a href=<?php echo "player.php?id=${player["player_id"]}";?>><?php echo $name;?></a></td>
 								<?php }
 							}
 
 							else { ?>
-								<td><a href=<?php echo "player.php?id=".$player["player_id"];?>> <?php echo $name;?></a></td>
+								<td><a href=<?php echo "player.php?id=${player["player_id"]}";?>><?php echo $name;?></a></td>
 							<?php } ?>
 								<td><?php echo CalculateTimer($player["record"]);?></td>
 								<td><?php echo date("F d Y | g:i:s A", $player["timestamp"]);?></td>
@@ -143,7 +143,7 @@
 					$total_records += $total_pages;
 					$i = 0;
 
-					if ($stmt = $mysqli->prepare("SELECT * FROM `".$specific_map."` ORDER BY `record` ASC LIMIT ?,?;")) {
+					if ($stmt = $mysqli->prepare("SELECT * FROM `${specific_map}` ORDER BY `record` ASC LIMIT ?,?;")) {
 						$calc_page = ($page - 1) * $num_results_on_page;
 						$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 						$stmt->execute(); 
@@ -158,16 +158,16 @@
 								if ($enable_geoip == true){
 									$info = get_player_geoip($row["player_id"]);
 									if (!empty($info["country_code"])){	?>
-											<td><a href=<?php echo "player.php?id=".$row["player_id"];?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
+											<td><a href=<?php echo "player.php?id=${row["player_id"]}";?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
 									<?php }
 
 									else { ?>
-											<td><a href=<?php echo "player.php?id=".$row["player_id"];?>><?php echo $name;?></a></td>
+											<td><a href=<?php echo "player.php?id=${row["player_id"]}";?>><?php echo $name;?></a></td>
 									<?php }
 								}
 
 								else { ?>
-									<td><a href=<?php echo "player.php?id=".$row["player_id"];?>><?php echo $name;?></a></td>
+									<td><a href=<?php echo "player.php?id=${row["player_id"]}";?>><?php echo $name;?></a></td>
 								<?php } ?>
 								<td><?php echo CalculateTimer($row["record"]);?></td>
 								<td><?php echo date("F d Y | g:i:s A", $row["timestamp"]);?></td>

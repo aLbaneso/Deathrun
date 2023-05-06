@@ -12,10 +12,12 @@ public plugin_init(){
 	#else
 		register_plugin("Deathrun: Player Commands", __DATE__, AUTHOR)
 	#endif
+
 	register_clcmd("say id", "clcmd_id")
 	register_clcmd("say stats", "clcmd_stats")
 	register_clcmd("say best", "clcmd_best")
 	register_clcmd("say top15", "clcmd_top15")
+
 	get_mapname(mapname, charsmax(mapname))
 	strtolower(mapname)
 }
@@ -41,5 +43,5 @@ public clcmd_best(id){
 }
 
 public clcmd_top15(id){
-	show_motd(id, fmt("%s/index.php", WEBSITE), fmt("%s Records", mapname))
+	show_motd(id, fmt("%s/index.php?map=%s", WEBSITE, mapname), fmt("%s Records", mapname))
 }

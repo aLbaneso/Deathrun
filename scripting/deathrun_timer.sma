@@ -138,5 +138,6 @@ public IgnoredOutput(failState, Handle:query, const error[], errNum){
 	RUNPRESCRIPT("IgnoredOutput")
 }
 
-public Clock(Value)
-	return fmt("%d:%02d.%03dms", Value/1000/60, (Value/1000) % 60, Value % 1000)
+public Clock(Milliseconds){
+	return fmt("%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
+}

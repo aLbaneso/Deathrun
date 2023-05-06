@@ -29,12 +29,12 @@ public plugin_init(){
 	GetPluginName
 }
 
-public plugin_cfg()
+public plugin_cfg(){
 	MYSQL_Init()
+}
 
-public PrintRecordmen(){
-	set_hudmessage(255, 255, 255, 0.85, 0.90, 0, _, 2.0, 0.1, 0.1, .channel = 2)
-	show_hudmessage(0, recordmen)
+public plugin_end(){
+	SQL_FreeHandle(MYSQL_CONNECTION)
 }
 
 public MYSQL_Init(){
@@ -47,6 +47,11 @@ public MYSQL_Init(){
 
 public WhoIsRecordmen(){
 	SQL_ThreadQuery(MYSQL_CONNECTION, "GetRecordmen", fmt("SELECT * FROM `%s` ORDER BY `record` ASC LIMIT 1;", mapname))
+}
+
+public PrintRecordmen(){
+	set_hudmessage(255, 255, 255, 0.85, 0.90, 0, _, 2.0, 0.1, 0.1, .channel = CHANNEL_RECORDMEN)
+	show_hudmessage(0, recordmen)
 }
 
 public GetRecordmen( failState, Handle:query, error[], errNum){
@@ -72,5 +77,6 @@ public GetRecordmenName( failState, Handle:query, error[], errNum){
 	}
 }
 
-public Clock(Milliseconds)
+public Clock(Milliseconds){
 	return fmt("%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
+}

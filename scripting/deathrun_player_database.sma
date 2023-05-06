@@ -29,6 +29,10 @@ public plugin_cfg(){
 	MYSQL_Init()
 }
 
+public plugin_end(){
+	SQL_FreeHandle(MYSQL_CONNECTION)
+}
+
 public MYSQL_Init(){
 	MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 	new query[256]
@@ -59,8 +63,9 @@ public client_disconnected(id){
 	}
 }
 
-public __get_user_id(iPlugin, iParams)
+public __get_user_id(iPlugin, iParams){
 	return is_user_connected(get_param(1)) ? DatabaseID[get_param(1)] : -1
+}
 
 public DataOutput(failState, Handle:query, error[], errNum, data[]){
 	RUNPRESCRIPT("IgnoredOutput")

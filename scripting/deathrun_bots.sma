@@ -21,9 +21,9 @@ new Bot[][BotSettings] = {
 
 public plugin_init(){
 	#if AMXX_VERSION_NUM >= 200
-	register_plugin("Deathrun: Bots", __DATE__, AUTHOR, URL, DESCRIPTION)
+		register_plugin("Deathrun: Bots", __DATE__, AUTHOR, URL, DESCRIPTION)
 	#else
-	register_plugin("Deathrun: Bots", __DATE__, AUTHOR)
+		register_plugin("Deathrun: Bots", __DATE__, AUTHOR)
 	#endif
 
 	register_logevent("EventRoundStart", 2, "1=Round_Start")	
@@ -54,13 +54,13 @@ public check_bot(){
 	for (new i = 0; i < sizeof(Bot); i++){
 		if (Bot[i][botid] == 0){
 			missing_bot = true
+			server_print("Bot %s is not on the server", Bot[i][botname])
 			CreateBot(Bot[i][botid], Bot[i][botname], Bot[i][botteam])
 		}
 	}
 	
 	if (missing_bot == true){
-		server_cmd("sv_restart 1")
-		server_exec()
+		set_cvar_num("sv_restart", 1)
 	}
 }
 
@@ -81,7 +81,7 @@ public begin_render(){
 	
 }
 
-stock CreateBot(&_botid, const name[], const team){
+stock CreateBot(&_botid, const name[], CsTeams:team){
 	new id = engfunc(EngFunc_CreateFakeClient, name)
 	if (pev_valid(id)){
 		engfunc(EngFunc_FreeEntPrivateData, id)
@@ -124,5 +124,9 @@ stock CreateBot(&_botid, const name[], const team){
 		
 		_botid = id
 		server_print("Bot %s ID[%d] is now active ", name, _botid)
+	}
+
+	else {
+		set_fail_state("Can't create Bot %s", name)
 	}
 }

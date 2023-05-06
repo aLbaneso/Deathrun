@@ -34,17 +34,23 @@ public plugin_init(){
 	GetPluginName
 }
 
-public plugin_cfg()
-	MYSQL_Init()
-
 public plugin_natives(){
 	register_native("_get_user_rank", "__get_user_rank")
 	register_native("_get_user_record", "__get_user_record")
 	register_native("_get_user_timestamp", "__get_user_timestamp")
 }
 
-public MYSQL_Init()
+public plugin_cfg(){
+	MYSQL_Init()
+}
+
+public plugin_end(){
+	SQL_FreeHandle(MYSQL_CONNECTION)
+}
+
+public MYSQL_Init(){
 	MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
+}
 
 public UserLogin(id){
 	Player[id][rank] = 0
@@ -118,8 +124,9 @@ public clcmd_rank(id){
 		client_print_color(id, print_team_blue, "%s ^1You are not ranked yet in this map", TAG)
 }
 
-public Clock(Milliseconds)
+public Clock(Milliseconds){
 	return fmt("%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
+}
 
 public Date(Timestamp){
 	new szDate[MAX_NAME_LENGTH]
@@ -127,11 +134,14 @@ public Date(Timestamp){
 	return szDate
 }
 
-public __get_user_rank(iPlugin, iParams)
+public __get_user_rank(iPlugin, iParams){
 	return is_user_connected(get_param(1)) ? Player[get_param(1)][rank] : -1
+}
 
-public __get_user_record(iPlugin, iParams)
+public __get_user_record(iPlugin, iParams){
 	return is_user_connected(get_param(1)) ? Player[get_param(1)][record] : -1
+}
 
-public __get_user_timestamp(iPlugin, iParams)
+public __get_user_timestamp(iPlugin, iParams){
 	return is_user_connected(get_param(1)) ? Player[get_param(1)][timestamp] : -1
+}

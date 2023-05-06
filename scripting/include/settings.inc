@@ -19,3 +19,5 @@
 #define T_BOTNAME "Buy VIP: albaneso.shop"
 #define CT_BOTNAME "Relaxing"
 #define SPEC_BOTNAME "Knife Menu = /knife"
+
+#define CHANNEL_RECORDMEN 2
