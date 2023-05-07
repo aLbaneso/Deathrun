@@ -1,12 +1,15 @@
 # Deathrun Timer
 ### Features
 
-- Made on AmxxPawn
+- Made on AmxxPawn * 1.9 and up supported
 - Time your best run and compete against other players
-- Records down to milliseconds
-- Uses MySQL which can be used on any side project
+- Break others records and set yourself higher in the ranking table
+- Records down to milliseconds (1/1000 of a seconds)
+- Uses MySQL which can be used on any side project (discord integration etc)
 - Button-less, first to kill the Terrorist wins the game
-- Terrorist has been replaced with a BOT
+-- Which means that you cannot have a player as a Terrorist. A bot will be created instead and will sit on spawn. See `deathrun_bots.sma`
+- Webserver to display map records and player stats.
+
 
 ### Requirements
 1. AmxxModule
@@ -15,9 +18,10 @@
 
 ### Setup
 1. Modify `scripting/include/settings.inc` to configure your database and add your website url to later complie the files
-2. Upload web folder to your web server (requires php) and the plugins to your game server (should work on any/HLDS with AMXX 1.9+)
-3. Enable mysql at configs/modules.ini file
-4. Start the server, mod will take care of the SQL table creation
+2. Modify `web/config.php` to configure your database
+3. Upload web folder to your web server (requires php) and the plugins to your game server (should work on any/HLDS with AMXX 1.9+)
+4. Enable mysql at configs/modules.ini file
+5. Start the server, mod will take care of the SQL table creation
 
 ### TODO
 You still need to block players from joining Terrorist team. Although this is mandatory for the mod to run without any problems, there should be plenty of resources online that can help you auto-join all players to CT. REHLDS has already implemented this feature unless you're using HLDS. In this case you need to look for another plugin to add on top of this MOD.
@@ -25,7 +29,7 @@ You still need to block players from joining Terrorist team. Although this is ma
 ### SQL Table Examples
 
 #### maplist.sql
-list will be used to loop throw the rows and display the maps alphabetically on the web server
+list will be used to loop through the rows and display the maps alphabetically on the web server
 |Identifier  | Map|
 |------------- | ------------- |
 |1  | deathrun_arctic|
@@ -34,7 +38,7 @@ list will be used to loop throw the rows and display the maps alphabetically on 
 |4  | deathrun_fun|
 
 #### mapname.sql
-- list will be unordered and will be used to loop throw the rows and display the records from fastest to slowest
+- list will be unordered and will be used to loop through the rows and display the records from fastest to slowest
 
 |Identifier  | Player ID | Record | Date Timestamp|
 |------------- | -------------|-------------|-------------|
@@ -54,4 +58,25 @@ list will be used to loop throw the rows and display the maps alphabetically on 
 
 [![YouTube](http://img.youtube.com/vi/duUQtwEVd0s/0.jpg)](http://www.youtube.com/watch?v=duUQtwEVd0s&list=PLuVPUqdG6VjIMcQs8Y3eVFpVRBvDWhtZ4 "aLbaneso.neT Deathrun")
 
-Website images: https://imgur.com/a/1vDFTZP (assume maps are deathrun ones ran by legit players)
+### Website Images
+Home Page (index.php)
+
+[![Home Page](https://i.imgur.com/VikAJEK.png "Home Page")](https://i.imgur.com/VikAJEK.png "Home Page")
+
+Top 15 of de_dust2 map (index.php?map=de_dust2)
+
+[![Top 15](https://i.imgur.com/sunreLP.png "Top 15")](https://i.imgur.com/sunreLP.png "Top 15")
+
+Best Players (player.php)
+
+[![Best Players](https://i.imgur.com/4aFgXWA.png "Best Players")](https://i.imgur.com/4aFgXWA.png "Best Players")
+
+Player's records list (player.php?id=5)
+
+[![Player's records list](https://i.imgur.com/f1QZjnP.png "Player's records list")](https://i.imgur.com/f1QZjnP.png "Player's records list")
+
+Pagination prevents page break in you have hundreds of records.
+A good webserver will never have any issues sorting throught the records and ranking them quick.
+If you want players information to remain private you can configure `web/config.php` to hide steamid, country and last active date.
+
+Project made using VSCode, AMX Mod X 1.9.0.5294, PHP 8 and MariaDB
