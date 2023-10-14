@@ -7,19 +7,22 @@
 #include <hamsandwich>
 #include <settings>
 
-enum BotSettings{
+enum BotSettings
+{
 	botid,
 	botname[MAX_NAME_LENGTH],
 	CsTeams:botteam
 }
 
-new Bot[][BotSettings] = {
+new Bot[][BotSettings] =
+{
 	{ 0, T_BOTNAME,		CS_TEAM_T },
 	{ 0, CT_BOTNAME,	CS_TEAM_CT },
 	{ 0, SPEC_BOTNAME,	CS_TEAM_SPECTATOR }
 }
 
-public plugin_init(){
+public plugin_init()
+{
 	#if AMXX_VERSION_NUM >= 200
 		register_plugin("Deathrun: Bots", __DATE__, AUTHOR, URL, DESCRIPTION)
 	#else
@@ -32,43 +35,54 @@ public plugin_init(){
 	set_task(30.0, "check_bot", .flags="b")
 }
 
-public client_disconnected(id){
+public client_disconnected(id)
+{
 	if (id > 0){
-		for (new i = 0; i < sizeof(Bot); i++){
-			if (id == Bot[i][botid]){
+		for (new i = 0; i < sizeof(Bot); i++)
+		{
+			if (id == Bot[i][botid])
+			{
 				Bot[i][botid] = 0
 			}
 		}
 	}
 }
 
-public CreateBots(){
-	for (new i = 0; i < sizeof(Bot); i++){
+public CreateBots()
+{
+	for (new i = 0; i < sizeof(Bot); i++)
+	{
 		CreateBot(Bot[i][botid], Bot[i][botname], Bot[i][botteam])
 	}
 }
 
-public check_bot(){
+public check_bot()
+{
 	new bool: missing_bot = false
 	
-	for (new i = 0; i < sizeof(Bot); i++){
-		if (Bot[i][botid] == 0){
+	for (new i = 0; i < sizeof(Bot); i++)
+	{
+		if (Bot[i][botid] == 0)
+		{
 			missing_bot = true
 			server_print("Bot %s is not on the server", Bot[i][botname])
 			CreateBot(Bot[i][botid], Bot[i][botname], Bot[i][botteam])
 		}
 	}
 	
-	if (missing_bot == true){
+	if (missing_bot == true)
+	{
 		set_cvar_num("sv_restart", 1)
 	}
 }
 
-public EventRoundStart(){
+public EventRoundStart()
+{
 	set_task(1.0, "begin_render", .flags="a", .repeat=3)
 }
 
-public begin_render(){
+public begin_render()
+{
 	if (!is_user_alive(Bot[0][botid]))
 		spawn(Bot[0][botid])
 	
@@ -81,9 +95,11 @@ public begin_render(){
 	
 }
 
-stock CreateBot(&_botid, const name[], CsTeams:team){
+stock CreateBot(&_botid, const name[], CsTeams:team)
+{
 	new id = engfunc(EngFunc_CreateFakeClient, name)
-	if (pev_valid(id)){
+	if (pev_valid(id))
+	{
 		engfunc(EngFunc_FreeEntPrivateData, id)
 		dllfunc(MetaFunc_CallGameEntity, "player", id)
 		set_user_info(id, "rate", "3500")
@@ -110,11 +126,13 @@ stock CreateBot(&_botid, const name[], CsTeams:team){
 		cs_set_user_team(id, team)
 		ExecuteHamB(Ham_CS_RoundRespawn, id)
 		
-		if (team != CS_TEAM_T){
+		if (team != CS_TEAM_T)
+		{
 			engfunc(EngFunc_SetOrigin, id, Float:{9200.0, 9200.0, 9200.0})
 		}
 		
-		else {
+		else
+		{
 			cs_set_user_model(id, "leet")
 		}
 		
@@ -126,7 +144,8 @@ stock CreateBot(&_botid, const name[], CsTeams:team){
 		server_print("Bot %s ID[%d] is now active ", name, _botid)
 	}
 
-	else {
+	else
+	{
 		set_fail_state("Can't create Bot %s", name)
 	}
 }

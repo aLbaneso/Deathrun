@@ -77,7 +77,7 @@
 
 					<tr>
 						<td style="text-align:right;"><?php echo $map_id_table;?></td>
-						<td><a href=<?php echo"?map=${map}"?>><?php echo $map;?></a></td>
+						<td><a href=<?php echo"?map={$map}"?>><?php echo $map;?></a></td>
 
 						<?php
 							$map_records = get_map_records($map);
@@ -96,16 +96,16 @@
 								$info = get_player_geoip($player["player_id"]);
 
 								if (!empty($info["country_code"])){ ?>
-									<td><a href=<?php echo "player.php?id=${player["player_id"]}";?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
+									<td><a href=<?php echo "player.php?id={$player["player_id"]}";?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
 								<?php }
 
 								else { ?>
-										<td><a href=<?php echo "player.php?id=${player["player_id"]}";?>><?php echo $name;?></a></td>
+										<td><a href=<?php echo "player.php?id={$player["player_id"]}";?>><?php echo $name;?></a></td>
 								<?php }
 							}
 
 							else { ?>
-								<td><a href=<?php echo "player.php?id=${player["player_id"]}";?>><?php echo $name;?></a></td>
+								<td><a href=<?php echo "player.php?id={$player["player_id"]}";?>><?php echo $name;?></a></td>
 							<?php } ?>
 								<td><?php echo CalculateTimer($player["record"]);?></td>
 								<td><?php echo date("F d Y | g:i:s A", $player["timestamp"]);?></td>
@@ -143,7 +143,7 @@
 					$total_records += $total_pages;
 					$i = 0;
 
-					if ($stmt = $mysqli->prepare("SELECT * FROM `${specific_map}` ORDER BY `record` ASC LIMIT ?,?;")) {
+					if ($stmt = $mysqli->prepare("SELECT * FROM `{$specific_map}` ORDER BY `record` ASC LIMIT ?,?;")) {
 						$calc_page = ($page - 1) * $num_results_on_page;
 						$stmt->bind_param('ii', $calc_page, $num_results_on_page);
 						$stmt->execute(); 
@@ -158,16 +158,16 @@
 								if ($enable_geoip == true){
 									$info = get_player_geoip($row["player_id"]);
 									if (!empty($info["country_code"])){	?>
-											<td><a href=<?php echo "player.php?id=${row["player_id"]}";?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
+											<td><a href=<?php echo "player.php?id={$row["player_id"]}";?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
 									<?php }
 
 									else { ?>
-											<td><a href=<?php echo "player.php?id=${row["player_id"]}";?>><?php echo $name;?></a></td>
+											<td><a href=<?php echo "player.php?id={$row["player_id"]}";?>><?php echo $name;?></a></td>
 									<?php }
 								}
 
 								else { ?>
-									<td><a href=<?php echo "player.php?id=${row["player_id"]}";?>><?php echo $name;?></a></td>
+									<td><a href=<?php echo "player.php?id={$row["player_id"]}";?>><?php echo $name;?></a></td>
 								<?php } ?>
 								<td><?php echo CalculateTimer($row["record"]);?></td>
 								<td><?php echo date("F d Y | g:i:s A", $row["timestamp"]);?></td>
@@ -216,12 +216,12 @@
 	<head>
 		<?php
 			if ($gotomap == true){
-				$title = "${total_records} Records on ${specific_map} | ${server_name}";
+				$title = "{$total_records} Records on {$specific_map} | {$server_name}";
 				
 			}
 
 			else {
-				$title = "${total_records} Total Records | ${server_name}";
+				$title = "{$total_records} Total Records | {$server_name}";
 			}
 		?>
 		<title><?php echo $title;?></title>

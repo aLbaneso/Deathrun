@@ -10,7 +10,8 @@ native _get_user_id(id)
 new PluginName[MAX_NAME_LENGTH]
 new Handle:MYSQL_CONNECTION
 
-public plugin_init(){
+public plugin_init()
+{
 	#if AMXX_VERSION_NUM >= 200
 		register_plugin("Deathrun: MySQL GeoIP", __DATE__, AUTHOR, URL, DESCRIPTION)
 	#else
@@ -20,11 +21,13 @@ public plugin_init(){
 	GetPluginName
 }
 
-public plugin_cfg(){
+public plugin_cfg()
+{
 	MYSQL_Init()
 }
 
-public plugin_end(){
+public plugin_end()
+{
 	SQL_FreeHandle(MYSQL_CONNECTION)
 }
 
@@ -38,16 +41,19 @@ public MYSQL_Init(){
 	PRIMARY KEY (`id`));", GEOIP))
 }
 
-public UserLogin(id){
+public UserLogin(id)
+{
 	new UserIP[MAX_NAME_LENGTH], CountryCode[3], systime = get_systime()
 	get_user_ip(id, UserIP, charsmax(UserIP))
 
-	if (geoip_code2_ex(UserIP, CountryCode)){
+	if (geoip_code2_ex(UserIP, CountryCode))
+	{
 		SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput",
 			fmt("INSERT INTO `%s` VALUES(%d, ^"%s^", %d) ON DUPLICATE KEY UPDATE `country_code` = ^"%s^", `timestamp` = %d;", GEOIP, _get_user_id(id), CountryCode, systime, CountryCode, systime))
 	}
 }
 
-public IgnoredOutput(failState, Handle:query, const error[], errNum){
+public IgnoredOutput(failState, Handle:query, const error[], errNum)
+{
 	RUNPRESCRIPT("IgnoredOutput")
 }

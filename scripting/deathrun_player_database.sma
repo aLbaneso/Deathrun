@@ -10,7 +10,8 @@ new Handle:MYSQL_CONNECTION
 new DatabaseID[MAX_PLAYERS + 1]
 new forwardUserLogin, forwardUserLoginReturn
 
-public plugin_init(){
+public plugin_init()
+{
 	#if AMXX_VERSION_NUM >= 200
 		register_plugin("Deathrun: Player Database", __DATE__, AUTHOR, URL, DESCRIPTION)
 	#else
@@ -21,19 +22,23 @@ public plugin_init(){
 	GetPluginName
 }
 
-public plugin_natives(){
+public plugin_natives()
+{
 	register_native("_get_user_id", "__get_user_id")
 }
 
-public plugin_cfg(){
+public plugin_cfg()
+{
 	MYSQL_Init()
 }
 
-public plugin_end(){
+public plugin_end()
+{
 	SQL_FreeHandle(MYSQL_CONNECTION)
 }
 
-public MYSQL_Init(){
+public MYSQL_Init()
+{
 	MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 	new query[256]
 	formatex(query, charsmax(query), "CREATE TABLE IF NOT EXISTS `%s` (\
@@ -45,8 +50,10 @@ public MYSQL_Init(){
 	SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", query)
 }
 
-public client_putinserver(id){
-	if (!is_user_bot(id) && !is_user_hltv(id)){
+public client_putinserver(id)
+{
+	if (!is_user_bot(id) && !is_user_hltv(id))
+	{
 		new steamid[32], data[2]
 		data[0] = id
 		data[1] = 0
@@ -56,34 +63,43 @@ public client_putinserver(id){
 	}
 }
 
-public client_disconnected(id){
-	if (!is_user_bot(id) && !is_user_hltv(id)){
+public client_disconnected(id)
+{
+	if (!is_user_bot(id) && !is_user_hltv(id))
+	{
 		SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("UPDATE `%s` SET `name` = '%n' WHERE id = %d;", MYSQL_TABLE, id, DatabaseID[id]))
 		DatabaseID[id] = 0
 	}
 }
 
-public __get_user_id(iPlugin, iParams){
+public __get_user_id(iPlugin, iParams)
+{
 	return is_user_connected(get_param(1)) ? DatabaseID[get_param(1)] : -1
 }
 
-public DataOutput(failState, Handle:query, error[], errNum, data[]){
+public DataOutput(failState, Handle:query, error[], errNum, data[])
+{
 	RUNPRESCRIPT("IgnoredOutput")
 
-	else {
+	else
+	{
 		new id = data[0]
-		if(is_user_connected(id)){
-			if(!SQL_NumResults(query)){
+		if(is_user_connected(id))
+		{
+			if(!SQL_NumResults(query))
+			{
 				new steamid[32]
 				get_user_authid(id, steamid, charsmax(steamid))
 				SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("INSERT INTO `%s` VALUES(NULL, '%s', '%n');", MYSQL_TABLE, steamid, id))
 				client_putinserver(id)
 			}
 
-			else {
+			else
+			{
 				DatabaseID[id] = SQL_ReadResult(query, 0)
 
-				if (!ExecuteForward(forwardUserLogin, forwardUserLoginReturn, id)){
+				if (!ExecuteForward(forwardUserLogin, forwardUserLoginReturn, id))
+				{
 					server_print("%s:Cannot execute forward", PluginName)
 				}
 			}
@@ -91,6 +107,7 @@ public DataOutput(failState, Handle:query, error[], errNum, data[]){
 	}
 }
 
-public IgnoredOutput(failState, Handle:query, const error[], errNum){
+public IgnoredOutput(failState, Handle:query, const error[], errNum)
+{
 	RUNPRESCRIPT("IgnoredOutput")
 }

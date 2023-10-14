@@ -77,16 +77,16 @@
 						if ($enable_geoip == true){
 							$info = get_player_geoip($dud);
 							if (!empty($info["country_code"])){ ?>
-								<td><a href=<?php echo "?id=${dud}";?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
+								<td><a href=<?php echo "?id={$dud}";?>><img class="scale" src=<?php echo "image/flags/".strtolower($info["country_code"]).".png";?>> <?php echo $name;?></a></td>
 							<?php }
 
 							else { ?>
-									<td><a href=<?php echo "?id=${dud}";?>><?php echo $name;?></a></td>
+									<td><a href=<?php echo "?id={$dud}";?>><?php echo $name;?></a></td>
 							<?php }
 						}
 
 						else { ?>
-							<td><a href=<?php echo "?id=${dud}";?>><?php echo $name;?></a></td>
+							<td><a href=<?php echo "?id={$dud}";?>><?php echo $name;?></a></td>
 						<?php } ?>
 					<td><?php echo $counts[$dud]." map(s)";?></td>
 				</tr>
@@ -158,7 +158,7 @@
 						if (!empty($data)){?>
 							<tr>
 								<td style="text-align:right;"><?php echo $i; $i++;?></td>
-								<td><a href=<?php echo "index.php?map=${map}"?>><?php echo $map;?></td>
+								<td><a href=<?php echo "index.php?map={$map}"?>><?php echo $map;?></td>
 								<td><?php echo $rank ? CalculateTimer($data["record"])." (".$rank.")" : CalculateTimer($data["record"]);?></td>
 								<td><?php echo time_elapsed_string($data["timestamp"]);?></td>
 						<?php } ?>

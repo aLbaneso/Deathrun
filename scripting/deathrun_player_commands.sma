@@ -6,7 +6,8 @@ native _get_user_id(id)
 new bool: pass[MAX_PLAYERS + 1] = false
 new mapname[MAX_NAME_LENGTH]
 
-public plugin_init(){
+public plugin_init()
+{
 	#if AMXX_VERSION_NUM >= 200
 		register_plugin("Deathrun: Player Commands", __DATE__, AUTHOR, URL, DESCRIPTION)
 	#else
@@ -22,26 +23,32 @@ public plugin_init(){
 	strtolower(mapname)
 }
 
-public UserLogin(id){
+public UserLogin(id)
+{
 	pass[id] = true
 }
 
-public client_disconnected(id){
+public client_disconnected(id)
+{
 	pass[id] = false
 }
 
-public clcmd_id(id){
+public clcmd_id(id)
+{
 	client_print_color(id, print_team_blue, "%s ^1Your ID is ^4%d ^3%s", TAG, _get_user_id(id), pass ? "passing" : "failing")
 }
 
-public clcmd_stats(id){
+public clcmd_stats(id)
+{
 	show_motd(id, fmt("%s/player.php?id=%d", WEBSITE, _get_user_id(id)), "My Records")
 }
 
-public clcmd_best(id){
+public clcmd_best(id)
+{
 	show_motd(id, fmt("%s/player.php", WEBSITE), "Best Players")
 }
 
-public clcmd_top15(id){
+public clcmd_top15(id)
+{
 	show_motd(id, fmt("%s/index.php?map=%s", WEBSITE, mapname), fmt("%s Records", mapname))
 }
