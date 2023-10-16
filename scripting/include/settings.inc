@@ -16,7 +16,7 @@
 #define RUNPRESCRIPT(%1) RUNFAILTEST;RUNERRORTEST(%1)
 #define GetPluginName get_plugin(-1,PluginName,charsmax(PluginName))
 
-#define T_BOTNAME "Buy VIP: albaneso.shop"
+#define T_BOTNAME "Buy VIP: shop.example.com"
 #define CT_BOTNAME "Relaxing"
 #define SPEC_BOTNAME "Knife Menu = /knife"
 

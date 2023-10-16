@@ -89,8 +89,10 @@ public DataOutput(failState, Handle:query, error[], errNum, data[])
 	else
 	{
 		new id = data[0]
-		if(is_user_connected(id)){
-			if(SQL_NumResults(query)){
+		if(is_user_connected(id))
+		{
+			if(SQL_NumResults(query))
+			{
 				Player[id][record] = SQL_ReadResult(query, 2)
 				Player[id][timestamp] = SQL_ReadResult(query, 3)
 			}

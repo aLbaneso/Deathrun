@@ -3,8 +3,6 @@
 #include <sqlx>
 #include <settings>
 
-#define MYSQL_TABLE "players"
-
 new PluginName[MAX_NAME_LENGTH]
 new Handle:MYSQL_CONNECTION
 new DatabaseID[MAX_PLAYERS + 1]
