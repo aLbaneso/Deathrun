@@ -118,7 +118,7 @@
 
 			<tbody>
 				<td style="text-align:right;"><?php echo $gotoid;?></td>
-				<td><?php echo $info["name"];?></td>
+				<td><?php echo htmlspecialchars($info["name"]);?></td>
 				<?php if ($enable_steamid == true){?>
 					<td><?php echo $info["steamid"]; }?></td>
 				<?php

@@ -153,7 +153,8 @@
 							$i++ ?>
 								<tr>
 									<td style="text-align:right;"><?php echo $i+(($page-1) * $num_results_on_page);?></td>
-							<?php $name = get_player_name($row["player_id"]);
+							<?php
+								$name = get_player_name($row["player_id"]);
 
 								if ($enable_geoip == true){
 									$info = get_player_geoip($row["player_id"]);

@@ -33,7 +33,7 @@
 	{
 		global $mysqli;
 		global $players;
-		return $mysqli->query("SELECT `name` FROM `{$players}` WHERE `id` = {$id};")->fetch_column();
+		return htmlspecialchars($mysqli->query("SELECT `name` FROM `{$players}` WHERE `id` = {$id};")->fetch_column());
 	}
 
 	function get_player_info($id)
