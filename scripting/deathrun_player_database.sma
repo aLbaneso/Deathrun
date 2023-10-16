@@ -65,7 +65,10 @@ public client_disconnected(id)
 {
 	if (!is_user_bot(id) && !is_user_hltv(id))
 	{
-		SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("UPDATE `%s` SET `name` = '%n' WHERE id = %d;", MYSQL_TABLE, id, DatabaseID[id]))
+		new buffer[MAX_NAME_LENGTH*2]
+		SQL_QuoteStringFmt(Empty_Handle, buffer, charsmax(buffer), "%n", id)
+		server_print(buffer)
+		SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("UPDATE `%s` SET `name` = '%s' WHERE id = %d;", MYSQL_TABLE, buffer, DatabaseID[id]))
 		DatabaseID[id] = 0
 	}
 }
@@ -86,9 +89,11 @@ public DataOutput(failState, Handle:query, error[], errNum, data[])
 		{
 			if(!SQL_NumResults(query))
 			{
-				new steamid[32]
+				new steamid[32], buffer[MAX_NAME_LENGTH*2]
 				get_user_authid(id, steamid, charsmax(steamid))
-				SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("INSERT INTO `%s` VALUES(NULL, '%s', '%n');", MYSQL_TABLE, steamid, id))
+				SQL_QuoteStringFmt(Empty_Handle, buffer, charsmax(buffer), "%n", id)
+				server_print(buffer)
+				SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", fmt("INSERT INTO `%s` VALUES(NULL, '%s', '%s');", MYSQL_TABLE, steamid, buffer))
 				client_putinserver(id)
 			}
 
