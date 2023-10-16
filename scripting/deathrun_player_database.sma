@@ -37,7 +37,9 @@ public plugin_end()
 
 public MYSQL_Init()
 {
-	MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
+	// MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
+	MYSQL_CONNECTION = SQL_MakeStdTuple()
+	
 	new query[256]
 	formatex(query, charsmax(query), "CREATE TABLE IF NOT EXISTS `%s` (\
 		`id` INT(4) NOT NULL AUTO_INCREMENT,\

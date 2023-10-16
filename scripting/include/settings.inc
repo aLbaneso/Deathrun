@@ -20,4 +20,4 @@
 #define CT_BOTNAME "Relaxing"
 #define SPEC_BOTNAME "Knife Menu = /knife"
 
-#define CHANNEL_RECORDMEN 2
+#define CHANNEL_RECORDMAN 2

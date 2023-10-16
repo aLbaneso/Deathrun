@@ -51,7 +51,8 @@ public plugin_cfg()
 
 public MYSQL_Init()
 {
-	MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
+	// MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
+	MYSQL_CONNECTION = SQL_MakeStdTuple()
 }
 
 public client_disconnected(id)
@@ -61,10 +62,7 @@ public client_disconnected(id)
 
 public UserLogin(id)
 {
-	if (task_exists(id))
-	{
-		remove_task(id)
-	}
+	remove_task(id)
 }
 
 public HookSpawn(id)
