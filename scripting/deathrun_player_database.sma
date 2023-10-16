@@ -42,7 +42,7 @@ public MYSQL_Init()
 	formatex(query, charsmax(query), "CREATE TABLE IF NOT EXISTS `%s` (\
 		`id` INT(4) NOT NULL AUTO_INCREMENT,\
 		`steamid` VARCHAR(32) NOT NULL,\
-		`name` VARCHAR(32) NOT NULL,\
+		`name` VARCHAR(64) NOT NULL,\
 		PRIMARY KEY (`id`),\
 		UNIQUE (`steamid`));", MYSQL_TABLE)
 	SQL_ThreadQuery(MYSQL_CONNECTION, "IgnoredOutput", query)
