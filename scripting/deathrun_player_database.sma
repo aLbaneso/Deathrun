@@ -17,6 +17,20 @@ public plugin_init()
 	#endif
 	forwardUserLogin = CreateMultiForward("UserLogin", ET_IGNORE, FP_CELL)
 
+	// scripting/admin.sma
+	register_cvar("amx_sql_host", "127.0.0.1", FCVAR_PROTECTED)
+	register_cvar("amx_sql_user", "root", FCVAR_PROTECTED)
+	register_cvar("amx_sql_pass", "", FCVAR_PROTECTED)
+	register_cvar("amx_sql_db", "amx", FCVAR_PROTECTED)
+	register_cvar("amx_sql_type", "mysql", FCVAR_PROTECTED)
+	register_cvar("amx_sql_timeout", "60", FCVAR_PROTECTED)
+
+	new configsDir[64]
+	get_configsdir(configsDir, charsmax(configsDir))
+
+	server_cmd("exec %s/sql.cfg", configsDir)
+	//
+
 	GetPluginName
 }
 
@@ -39,7 +53,7 @@ public MYSQL_Init()
 {
 	// MYSQL_CONNECTION = SQL_MakeDbTuple(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 	MYSQL_CONNECTION = SQL_MakeStdTuple()
-	
+
 	new query[256]
 	formatex(query, charsmax(query), "CREATE TABLE IF NOT EXISTS `%s` (\
 		`id` INT(4) NOT NULL AUTO_INCREMENT,\
