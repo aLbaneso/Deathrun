@@ -25,6 +25,13 @@
 5. Enable mysql at configs/modules.ini file
 6. Start the server, mod will take care of the SQL table creation
 
+### Commands
+1. showbriefing ; set on default as letter I
+   
+Toggle between different types of timers:
+
+![normal timer ; percentage timer ; both](https://i.imgur.com/PqrApMA.gif)
+
 ### TODO
 You still need to block players from joining Terrorist team. Although this is mandatory for the mod to run without any problems, there should be plenty of resources online that can help you auto-join all players to CT. REHLDS has already implemented this feature unless you're using HLDS. In this case you need to look for another plugin to add on top of this MOD.
 
