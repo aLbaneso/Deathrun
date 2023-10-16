@@ -30,6 +30,11 @@ public plugin_init()
 	GetPluginName
 }
 
+public plugin_natives()
+{
+	register_native("has_record", "_has_record")
+}
+
 public plugin_cfg()
 {
 	MYSQL_Init()
@@ -94,4 +99,9 @@ public GetRecordmanName( failState, Handle:query, error[], errNum)
 public Clock(Milliseconds)
 {
 	return fmt("%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
+}
+
+public _has_record(iPlugin, iParams)
+{
+	return record
 }

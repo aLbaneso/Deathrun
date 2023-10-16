@@ -8,6 +8,7 @@
 #define YPOS 0.5
 
 #define RESPAWN 2023
+#define TIMER 4046
 
 native _get_user_id(id)
 native _get_user_rank(id)
@@ -27,6 +28,10 @@ enum PlayerData
 new Player[PlayerData], mapname[MAX_NAME_LENGTH]
 new Float: GetStartTime[MAX_PLAYERS + 1], Float: Time[MAX_PLAYERS + 1]
 
+native has_record()
+new recordman, Float: recordman_percentage[MAX_PLAYERS + 1], TimerToggler[MAX_PLAYERS + 1]
+new bool:isPlayer[MAX_PLAYERS + 1]
+
 public plugin_init()
 {
 	#if AMXX_VERSION_NUM >= 200
@@ -38,6 +43,9 @@ public plugin_init()
 	RegisterHam(Ham_Spawn, "player", "HookSpawn", 1)
 	RegisterHam(Ham_Killed, "player", "HookKilled", 0)
 
+	register_event("HLTV", "RefreshRecordman", "a", "1=0", "2=0")
+	register_clcmd("showbriefing", "ToggleTimer")
+
 	get_mapname(mapname, charsmax(mapname))
 	strtolower(mapname)
 
@@ -47,6 +55,7 @@ public plugin_init()
 public plugin_cfg()
 {
 	MYSQL_Init()
+	RefreshRecordman()
 }
 
 public MYSQL_Init()
@@ -57,19 +66,27 @@ public MYSQL_Init()
 
 public client_disconnected(id)
 {
+	isPlayer[id] = false
 	remove_task(id)
 }
 
 public UserLogin(id)
 {
+	isPlayer[id] = true
 	remove_task(id)
+	TimerToggler[id] = 0
 }
 
 public HookSpawn(id)
 {
-	remove_task(id)
-	GetStartTime[id] = get_gametime()
-	set_task(0.09, "Start", id, .flags="b")
+	if (isPlayer[id])
+	{
+		remove_task(id)
+		GetStartTime[id] = get_gametime()
+		recordman_percentage[id] = 0.0
+
+		set_task(0.09, "Start", id, .flags="b")
+	}
 }
 
 public HookKilled(Victim, Attacker)
@@ -82,9 +99,10 @@ public HookKilled(Victim, Attacker)
 		GameWin(Attacker)
 	}
 
-	else if (VictimTeam == 2)\
+	else if (VictimTeam == 2)
 	{
 		remove_task(Victim)
+		set_task(2.3, "Respawn", Victim+RESPAWN)
 	}
 }
 
@@ -125,7 +143,25 @@ public GameWin(id)
 	}
 
 	client_print_color(id, print_team_blue, "%s ^1%n won the round within ^3%s", TAG, id, Clock(Milliseconds))
-} 
+}
+
+public RefreshRecordman()
+{
+	recordman = has_record()
+}
+
+public ToggleTimer(id)
+{
+	if (recordman)
+	{
+		TimerToggler[id] >= 2 ? (TimerToggler[id] = 0) : TimerToggler[id]++
+	}
+
+	else
+	{
+		TimerToggler[id] = 0
+	}
+}
 
 public PublishRecord(bool: improvement, player_id, new_record, systime)
 {
@@ -143,8 +179,11 @@ public PublishRecord(bool: improvement, player_id, new_record, systime)
 public Start(id)
 {
 	Time[id] = get_gametime() - GetStartTime[id]
+	new Milliseconds = floatround(Time[id] * 1000)
+	recordman_percentage[id] = float(Milliseconds) / float(recordman) * 100.0
+
 	set_dhudmessage(255, 204, 0, XPOS, YPOS, .holdtime=0.09, .fadeintime=0.0, .fadeouttime=0.09)
-	show_dhudmessage(id, Clock(floatround(Time[id] * 1000)))
+	show_dhudmessage(id, HudClock(Milliseconds, recordman_percentage[id], TimerToggler[id]))
 }
 
 public Respawn(id)
@@ -164,4 +203,16 @@ public IgnoredOutput(failState, Handle:query, const error[], errNum)
 public Clock(Milliseconds)
 {
 	return fmt("%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
+}
+
+public HudClock(Milliseconds, Float: percentage, toggle)
+{
+	switch (toggle)
+	{
+		case 0: return fmt("%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
+		case 1: return fmt("%.02f%%", percentage)
+		case 2: return fmt("%d:%02d.%03dms^n%.02f%%", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000, percentage)
+	}
+
+	return fmt("0:00.000ms")
 }
