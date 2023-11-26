@@ -139,14 +139,7 @@
 			</tbody>
 		</table>
 		<table class="styled-table">
-			<thead>		
-				<th scope="col" style="text-align:right;">#</th>
-				<th>Map</th>
-				<th>Record <?php echo $enable_rank_in_personal_stats ? "(rank)" : ""?></th>
-				<th>Date</th>
-			</thead>
-
-			<tbody>
+			
 				<?php
 					$i = 1;
 					foreach ($maps as $map){
@@ -156,6 +149,14 @@
 						}
 						$data = get_player_map_data($gotoid, $map);
 						if (!empty($data)){?>
+							<thead>		
+								<th scope="col" style="text-align:right;">#</th>
+								<th>Map</th>
+								<th>Record <?php echo $enable_rank_in_personal_stats ? "(rank)" : ""?></th>
+								<th>Date</th>
+							</thead>
+
+							<tbody>
 							<tr>
 								<td style="text-align:right;"><?php echo $i; $i++;?></td>
 								<td><a href=<?php echo "index.php?map={$map}"?>><?php echo $map;?></td>

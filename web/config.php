@@ -52,7 +52,7 @@
 	function get_player_rank($id, $mapname)
 	{
 		global $mysqli;
-		return $mysqli->query("select 1 + count(*) from `{$mapname}` where `{$mapname}`.`record` < (select `{$mapname}`.`record` from `{$mapname}` where `{$mapname}`.`player_id` = {$id});")->fetch_column();
+		return $mysqli->query("WITH cte AS ( SELECT player_id, record, ROW_NUMBER() OVER (ORDER BY record) position FROM `{$mapname}` ) SELECT `position` FROM cte WHERE `player_id` = {$id};")->fetch_column();
 	}
 
 	function get_player_map_data($id, $mapname)
