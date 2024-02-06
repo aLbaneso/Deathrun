@@ -58,6 +58,7 @@
 	<center>
 		<?php if ($gotomap == false){ ?>
 		<table class="styled-table">
+			<!-- <a href="tutorial.html">How to play runs?</a> -->
 			<thead>
 				<tr>
 					<th scope="col" style="text-align:right;">#</th>
@@ -66,6 +67,7 @@
 					<th>Best Player</th>
 					<th>Record</th>
 					<th>Date</th>
+					<th>Download</th>
 				</tr>
 			</thead>
 
@@ -109,11 +111,13 @@
 							<?php } ?>
 								<td><?php echo CalculateTimer($player["record"]);?></td>
 								<td><?php echo date("F d Y | g:i:s A", $player["timestamp"]);?></td>
+								<td><a href=<?php echo "download.php?map={$map}"?>>Unavailable</a></td>
 							</tr>
 							
 						<?php }
 
 						else { ?>
+							<td>-</td>
 							<td>-</td>
 							<td>-</td>
 							<td>-</td>

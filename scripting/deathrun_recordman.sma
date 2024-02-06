@@ -12,6 +12,7 @@ new recordman[64] = "no record";
 new mapname[MAX_NAME_LENGTH]
 new player_id, record, name[MAX_NAME_LENGTH]
 new forwardMapLoad, forwardMapLoadReturn
+new ClockString[MAX_NAME_LENGTH]
 
 public plugin_init()
 {
@@ -91,14 +92,15 @@ public GetRecordmanName( failState, Handle:query, error[], errNum)
 		if(SQL_NumResults(query))
 		{
 			SQL_ReadResult(query, 2, name, charsmax(name))
-			formatex(recordman, charsmax(recordman), " #1 %s\n   %s", name, Clock(record))
+			Clock(record, ClockString, charsmax(ClockString))
+			formatex(recordman, charsmax(recordman), " #1 %s\n   %s", name, ClockString)
 		}
 	}
 }
 
-public Clock(Milliseconds)
+public Clock(Milliseconds, String[], Length)
 {
-	return fmt("%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
+	formatex(String, Length, "%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
 }
 
 public _has_record(iPlugin, iParams)

@@ -131,27 +131,25 @@ public GetRankHandler(failState, Handle:query, error[], errNum, data[])
 	}
 }
 
-public clcmd_rank(id){
+public clcmd_rank(id)
+{
 	if (Player[id][rank])
 	{
-		client_print_color(id, print_team_blue, "%s ^1You're ranked ^3#%d ^1with ^3%s", TAG, Player[id][rank], Clock(Player[id][record]))
-		client_print_color(id, print_team_blue, "%s ^1This record was set on ^3%s", TAG, Date(Player[id][timestamp]))
+		new szDate[MAX_NAME_LENGTH], ClockString[MAX_NAME_LENGTH]
+		Clock(Player[id][record], ClockString, charsmax(ClockString))
+		format_time(szDate, charsmax(szDate), "%B %d %Y | %I:%M:%S %p", Player[id][timestamp])
+
+		client_print_color(id, print_team_blue, "%s ^1You're ranked ^3#%d ^1with ^3%s", TAG, Player[id][rank], ClockString)
+		client_print_color(id, print_team_blue, "%s ^1This record was set on ^3%s", TAG, szDate)
 	}
 	
 	else
 		client_print_color(id, print_team_blue, "%s ^1You are not ranked yet in this map", TAG)
 }
 
-public Clock(Milliseconds)
+public Clock(Milliseconds, String[], Length)
 {
-	return fmt("%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
-}
-
-public Date(Timestamp)
-{
-	new szDate[MAX_NAME_LENGTH]
-	format_time(szDate, charsmax(szDate), "%B %d %Y | %I:%M:%S %p", Timestamp)
-	return szDate
+	formatex(String, Length, "%d:%02d.%03dms", Milliseconds/1000/60, (Milliseconds/1000) % 60, Milliseconds % 1000)
 }
 
 public __get_user_rank(iPlugin, iParams)

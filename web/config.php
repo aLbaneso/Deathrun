@@ -117,4 +117,11 @@
 			}
 		}
 	}
+
+	// function map_exists($mapname)
+	// {
+	// 	$basechar_mapname = htmlspecialchars($mapname)
+	// 	global $mysqli;
+	// 	return $mysqli->query("SELECT `id` FROM `{$maplist}` WHERE `mapname` = \"{$basechar_mapname}\";")->fetch_column();
+	// }
 ?>
